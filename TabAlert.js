@@ -14,6 +14,10 @@ window.TabAlert = (function () {
 
 	let countdown = -1;
 	let intervalID;
+	let originalIcon = {
+		image: '',
+		type: '',
+	};
 	let originalTitle = document.title;
 	let showOriginalTitle = false;
 
@@ -61,6 +65,14 @@ window.TabAlert = (function () {
 		if (countdown === 0) publicObject.stop();
 	}
 
+	function _getOriginalFavicon() {
+		const favicon = document.querySelector('link[rel="shortcut icon"]');
+		if (favicon) {
+			originalIcon.image = favicon.getAttribute('href');
+			originalIcon.type = favicon.getAttribute('type');
+		}
+	}
+
 	/**
 	 * Flashes the title on the browser tab
 	 * @param {Object} args Arguments passed to function
@@ -90,6 +102,8 @@ window.TabAlert = (function () {
 	}
 
 	publicObject.test = function() {
+		_getOriginalFavicon();
+		console.log(originalIcon);
 		x = _createImageFromText('🔔');
 		console.log(x)
 		_changeFavicon(x, 'image/png');
