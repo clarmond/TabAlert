@@ -1,6 +1,10 @@
 /**
  * Used to draw attention to the current browser tab by flashing the document
  * title and/or favicon
+ *
+ * @example
+ * const tabAlert = new TabAlert();
+ * tabAlert.flashTitle({ message: "Time's up!", times: 5 });
  */
 
 window.TabAlert = (function () {
@@ -8,12 +12,34 @@ window.TabAlert = (function () {
 
 	const DEFAULT_DELAY = 750;
 
-	let intervalID;
 	let countdown = -1;
-	let originalTitle = '';
+	let intervalID;
+	let originalTitle = document.title;
 	let showOriginalTitle = false;
 
-	function _changeFavicon(imageSource) {
+	/**
+	 * Takes a string (character) and creates a PNG image
+	 * @param {String} str String to create icon from
+	 * @returns {String} Returns a data URI
+	 */
+	function _createImageFromText(str) {
+		if (document.querySelector('#_TabAlertCanvas') === null) {
+			document.body.innerHTML += '<canvas id="_TabAlertCanvas" width="32" height="32" style="display:none"></canvas>';
+		}
+		const canvas = document.querySelector('#_TabAlertCanvas');
+		const context = canvas.getContext('2d');
+
+		context.font = '24px serif';
+		context.textAlign = 'center';
+		context.textBaseline = 'middle';
+		context.fillText(str, canvas.width / 2, canvas.height / 2);
+
+		const canvasImage = canvas.toDataURL('image/png');
+
+		return canvasImage;
+	}
+
+	function _changeFavicon(imageSource, imageType) {
 		let favicon = document.querySelector('link[rel="shortcut icon"]');
 
 		if (!favicon) {
@@ -23,7 +49,7 @@ window.TabAlert = (function () {
 			head.appendChild(favicon);
 		}
 
-		// favicon.setAttribute('type', 'image/png');
+		favicon.setAttribute('type', imageType);
 		favicon.setAttribute('href', imageSource);
 	}
 
@@ -34,7 +60,6 @@ window.TabAlert = (function () {
 		if (countdown === -1) countdown = -1;
 		if (countdown === 0) publicObject.stop();
 	}
-
 
 	/**
 	 * Flashes the title on the browser tab
@@ -56,9 +81,18 @@ window.TabAlert = (function () {
 		}, args.delay);
 	}
 
+	/**
+	 * Stops the alert and restores the title and/or icon back to the original
+	 */
 	publicObject.stop = function() {
 		window.clearInterval(intervalID);
 		document.title = originalTitle;
+	}
+
+	publicObject.test = function() {
+		x = _createImageFromText('🔔');
+		console.log(x)
+		_changeFavicon(x, 'image/png');
 	}
 
 	return publicObject;
