@@ -1,6 +1,5 @@
 /**
- * Used to draw attention to the current browser tab by flashing the document
- * title and/or favicon
+ * Used to draw attention to a browser tab by flashing the document title and/or favicon
  *
  * @example
  * const tabAlert = new TabAlert();
@@ -10,13 +9,13 @@
 window.TabAlert = (function () {
 	const publicObject = {};
 
-	const DEFAULT_DELAY = 500;
+	const DEFAULT_DELAY = 1000;
 	const ICONS = {
 		'bellhop bell': '🛎',
 		'speech balloon': '💬',
 		'police car light': '🚨',
 		'stop sign': '🛑',
-		'hour g;ass done': '⌛',
+		'hour glass done': '⌛',
 		'alarm clock': '⏰',
 		'stopwatch': '⏱',
 		'timer clock': '⏲',
@@ -30,6 +29,7 @@ window.TabAlert = (function () {
 		'red circle': '🔴',
 	}
 
+	let alertDelay = DEFAULT_DELAY;
 	let alertIcon = {
 		image: '',
 		type: '',
@@ -45,7 +45,7 @@ window.TabAlert = (function () {
 	let showOriginal = true;
 
 	/**
-	 * Takes a string (character) and creates a PNG image
+	 * Takes a string (character) and creates a PNG image from it
 	 * @param {String} str String to create icon from
 	 * @returns {String} Returns a data URI
 	 */
@@ -108,21 +108,13 @@ window.TabAlert = (function () {
 				image: favicon.getAttribute('href'),
 				type: favicon.getAttribute('type'),
 			};
+		} else {
+			console.warn('favicon not found');
+			return {
+				image: '',
+				type: '',
+			};
 		}
-	}
-
-	/**
-	 * Starts timer for alerts
-	 * @param {Number} [delay] Number of milliseconds between changes
-	 */
-	function _startTimer(delay) {
-		showOriginal = true;
-		if ((delay === undefined) || (isNaN(delay))) {
-			delay = DEFAULT_DELAY;
-		}
-		intervalID = window.setInterval(() => {
-			_timerEvent();
-		}, delay);
 	}
 
 	/**
@@ -138,29 +130,41 @@ window.TabAlert = (function () {
 	}
 
 	/**
+	 * Starts timer for alerts
+	 */
+	function _startTimer() {
+		showOriginal = true;
+		intervalID = window.setInterval(() => {
+			_timerEvent();
+		}, alertDelay);
+	}
+
+	/**
 	 * Flashes the title and/or icon on the browser tab
 	 * @param {Object} args Arguments passed to function
 	 * @param {String} [args.message] Message to flash in browser tab
 	 * @param {String} [args.icon] Icon to replace favicon with.
+	 * (See icon list at the top of this script)
 	 * @param {Number} [args.times] Number of times to flash the message
 	 * If no number is given, it will flash indefinitely until the
 	 * stop() method is called
 	 * @param {Number} [args.delay] How fast to flash the message.
 	 * This is the number of milliseconds between changes.
-	 * <b>Note<b>: Intervals may slow down when the tab is not active.
+	 * <b>Note<b>: For some browsers, 1000ms is the slowest interval allowed for
+	 * non-active tabs.
 	 * @example
 	 * const tabAlert = new TabAlert();
 	 * tabAlert.alert({ message: "Time's Up!", icon: "stopwatch", times: 3 });
 	 */
 	publicObject.alert = function(args) {
+		originalTitle = document.title;
+		originalIcon = _getOriginalFavicon();
 		if (args.message !== undefined) {
-			originalTitle = document.title;
 			alertTitle = args.message;
 		} else {
 			alertTitle = '';
 		}
 		if ((args.icon !== undefined) && (ICONS[args.icon])) {
-			originalIcon = _getOriginalFavicon();
 			alertIcon = _createImageFromText(ICONS[args.icon]);
 		} else {
 			alertIcon.image = '';
@@ -171,7 +175,7 @@ window.TabAlert = (function () {
 		} else {
 			countdown = 0;
 		}
-		if (args.delay !== undefined) {
+		if (!isNaN(args.delay)) {
 			alertDelay = DEFAULT_DELAY;
 		}
 		_startTimer();
