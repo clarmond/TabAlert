@@ -10,7 +10,7 @@
  * @example
  * // Run alert until window gets focus
  * const tabAlert = new TabAlert();
- * window.addEventListener('focus', tabAlert.stop();
+ * window.addEventListener('focus', tabAlert.stop());
  * tabAlert.alert({ message: "Time's up!", icon: "stopwatch" });
  */
 
@@ -49,7 +49,7 @@ window.TabAlert = (function () {
 		image: '',
 		type: '',
 	};
-	let originalTitle = document.title;
+	let originalTitle = window.top.document.title;
 	let showOriginal = true;
 
 	/**
@@ -60,10 +60,9 @@ window.TabAlert = (function () {
 	function _createImageFromText(str) {
 		const imageType = 'image/png';
 
-		if (document.querySelector('#_TabAlertCanvas') === null) {
-			document.body.innerHTML += '<canvas id="_TabAlertCanvas" width="32" height="32" style="display:none"></canvas>';
-		}
-		const canvas = document.querySelector('#_TabAlertCanvas');
+		const canvas = document.createElement('canvas');
+		canvas.setAttribute('width', 32);
+		canvas.setAttribute('height', 32);
 		const context = canvas.getContext('2d');
 
 		context.font = '24px serif';
@@ -80,12 +79,12 @@ window.TabAlert = (function () {
 	 * Changes favicon to the icon selected
 	 */
 	function _changeFavicon() {
-		let favicon = document.querySelector('link[rel="shortcut icon"]');
+		let favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
 
 		if (!favicon) {
-			favicon = document.createElement('link');
+			favicon = window.top.document.createElement('link');
 			favicon.setAttribute('rel', 'shortcut icon');
-			const head = document.querySelector('head');
+			const head = window.top.document.querySelector('head');
 			head.appendChild(favicon);
 		}
 
@@ -102,7 +101,7 @@ window.TabAlert = (function () {
 	 * Changes the title
 	 */
 	function _changeTitle() {
-		document.title = showOriginal ? originalTitle : alertTitle;
+		window.top.document.title = showOriginal ? originalTitle : alertTitle;
 	}
 
 	/**
@@ -110,7 +109,7 @@ window.TabAlert = (function () {
 	 * with the image and type
 	 */
 	function _getOriginalFavicon() {
-		const favicon = document.querySelector('link[rel="shortcut icon"]');
+		const favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
 		if (favicon) {
 			return {
 				image: favicon.getAttribute('href'),
@@ -165,7 +164,7 @@ window.TabAlert = (function () {
 	 * tabAlert.alert({ message: "Time's Up!", icon: "stopwatch", times: 3 });
 	 */
 	publicObject.alert = function(args) {
-		originalTitle = document.title;
+		originalTitle = window.top.document.title;
 		originalIcon = _getOriginalFavicon();
 		if (args.message !== undefined) {
 			alertTitle = args.message;
@@ -194,7 +193,9 @@ window.TabAlert = (function () {
 	 */
 	publicObject.stop = function() {
 		window.clearInterval(intervalID);
-		document.title = originalTitle;
+		showOriginal = true;
+		_changeFavicon();
+		_changeTitle();
 	}
 
 	return publicObject;
