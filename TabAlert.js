@@ -2,8 +2,15 @@
  * Used to draw attention to a browser tab by flashing the document title and/or favicon
  *
  * @example
+ * // Flash browser tab 5 times
  * const tabAlert = new TabAlert();
  * tabAlert.alert({ message: "Time's up!", icon: "stopwatch", times: 5 });
+ *
+ * @example
+ * // Run alert until window gets focus
+ * const tabAlert = new TabAlert();
+ * window.addEventListener('focus', tabAlert.stop();
+ * tabAlert.alert({ message: "Time's up!", icon: "stopwatch" });
  */
 
 window.TabAlert = (function () {
