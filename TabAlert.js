@@ -11,6 +11,24 @@ window.TabAlert = (function () {
 	const publicObject = {};
 
 	const DEFAULT_DELAY = 750;
+	const EMOJIS = {
+		'bellhop bell': '🛎',
+		'speech balloon': '💬',
+		'police car light': '🚨',
+		'stop sign': '🛑',
+		'hour g;ass done': '⌛',
+		'alarm clock': '⏰',
+		'stopwatch': '⏱',
+		'timer clock': '⏲',
+		'star': '⭐',
+		'fire': '🔥',
+		'party popper': '🎉',
+		'bell': '🔔',
+		'envelope with arrow': '📩',
+		'locked': '🔒',
+		'exclamation mark': '❗',
+		'red circle': '🔴',
+	}
 
 	let countdown = -1;
 	let intervalID;
