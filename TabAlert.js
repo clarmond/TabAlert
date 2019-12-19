@@ -1,5 +1,6 @@
 /**
  * Used to draw attention to a browser tab by flashing the document title and/or favicon
+ * Source: https://github.com/clarmond/TabAlert
  *
  * @example
  * // Flash browser tab 5 times
