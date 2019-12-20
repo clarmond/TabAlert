@@ -15,7 +15,7 @@
 	<style>
 		#container {
 			margin: 20px auto;
-			width: 700px;
+			width: 800px;
 		}
 		input[type="radio"] {
 			margin-right: 10px;
@@ -31,6 +31,9 @@
 			min-height: 100px;
 			white-space: pre-wrap;
 			padding: 5px;
+		}
+		button {
+			width: 100px
 		}
 	</style>
 
@@ -56,6 +59,12 @@
 		if ((times !== '') && (!isNaN(times))) {
 			options += `times: ${times}, `;
 			sampleOptions.times = times;
+		}
+
+		const delay = $('#delay').val();
+		if ((delay !== '') && (!isNaN(delay))) {
+			options += `delay: ${delay}, `;
+			sampleOptions.delay = delay;
 		}
 
 		options = options.replace(/, $/, '');
@@ -87,6 +96,10 @@
 			<div class="form-group">
 				<label for="times">Number of Times</label>
 				<input type="times" class="form-control" id="times" placeholder="Number of times to run.  Enter 0 to run indefinitely.">
+			</div>
+			<div class="form-group">
+				<label for="delay">Delay</label>
+				<input type="delay" class="form-control" id="delay" placeholder="Animation delay in milliseconds (Default is 1000)">
 			</div>
 			<div class="form-group">
 				<label>Icon</label>
@@ -147,8 +160,10 @@
 					</div>
 				</div>
 			</div>
-			<button class="btn btn-success" onclick="startExample(); return false;">Start</button>
-			<button class="btn btn-danger" onclick="stopExample(); return false;">Stop</button>
+			<div>
+				<button class="btn btn-success" onclick="startExample(); return false;">Start</button>
+				<button class="btn btn-danger" onclick="stopExample(); return false;">Stop</button>
+			</div>
 		</form>
 		<div id="sample-code"></div>
 	</div>
