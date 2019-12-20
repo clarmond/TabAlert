@@ -2,6 +2,20 @@
 
 Flashes the title and/or icon in the browser tab to get the user's attention.
 
+## Usage
+```javascript
+<script src="TabAlert.min.js"></script>
+
+<script>
+  const tabAlert = new TabAlert();
+  tabAlert.alert(options);
+</script>
+```
+
+## Demo
+
+https://clarmond.github.io/TabAlert/index.html
+
 ## Examples
 
 Notify the user that their session has expired
