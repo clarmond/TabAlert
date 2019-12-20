@@ -1,0 +1,23 @@
+{
+  "name": "tab-alert",
+  "version": "1.0.0",
+  "description": "Flashes the title and/or icon in the browser tab to get the user's attention",
+  "main": "TabAlert.js",
+  "scripts": {
+    "build": "node node_modules/minify/bin/minify.js TabAlert.js > dist/TabAlert.min.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clarmond/TabAlert.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clarmond/TabAlert/issues"
+  },
+  "homepage": "https://github.com/clarmond/TabAlert#readme",
+  "dependencies": {
+    "minify": "^5.0.0"
+  }
+}
