@@ -139,6 +139,7 @@ window.TabAlert = (function () {
 		intervalID = window.setInterval(() => {
 			_timerEvent();
 		}, alertDelay);
+		_timerEvent();
 	}
 
 	/**
@@ -177,7 +178,10 @@ window.TabAlert = (function () {
 		} else {
 			countdown = 0;
 		}
+		args.delay = parseInt(args.delay);
 		if (!isNaN(args.delay)) {
+			alertDelay = args.delay
+		} else {
 			alertDelay = DEFAULT_DELAY;
 		}
 		_startTimer();
