@@ -10,7 +10,7 @@
  * @example
  * // Run alert until window gets focus
  * const tabAlert = new TabAlert();
- * window.addEventListener('focus', tabAlert.stop());
+ * window.addEventListener('focus', tabAlert.stop);
  * tabAlert.alert({ message: "Time's up!", icon: "stopwatch" });
  */
 
@@ -76,17 +76,12 @@ window.TabAlert = (function () {
 	}
 
 	/**
-	 * Changes favicon to the icon selected
+	 * Toggles favicon based on state (showOriginal)
 	 */
-	function _changeFavicon() {
+	function _toggleFavicon() {
 		let favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
 
-		if (!favicon) {
-			favicon = window.top.document.createElement('link');
-			favicon.setAttribute('rel', 'shortcut icon');
-			const head = window.top.document.querySelector('head');
-			head.appendChild(favicon);
-		}
+		if (!favicon) return;
 
 		if (showOriginal) {
 			favicon.setAttribute('type', originalIcon.type);
@@ -98,9 +93,9 @@ window.TabAlert = (function () {
 	}
 
 	/**
-	 * Changes the title
+	 * Toggles title based on state (showOriginal)
 	 */
-	function _changeTitle() {
+	function _toggleTitle() {
 		window.top.document.title = showOriginal ? originalTitle : alertTitle;
 	}
 
@@ -132,8 +127,8 @@ window.TabAlert = (function () {
 		countdown -= 1;
 		if (countdown < -1) countdown = -1;
 		if (countdown === 0) publicObject.stop();
-		if (alertIcon.image !== '') _changeFavicon();
-		if (alertTitle !== '') _changeTitle();
+		if (alertIcon.image !== '') _toggleFavicon();
+		if (alertTitle !== '') _toggleTitle();
 	}
 
 	/**
@@ -157,8 +152,8 @@ window.TabAlert = (function () {
 	 * stop() method is called
 	 * @param {Number} [args.delay] How fast to flash the message.
 	 * This is the number of milliseconds between changes.
-	 * <b>Note<b>: For some browsers, 1000ms is the slowest interval allowed for
-	 * non-active tabs.
+	 * <b>Note<b>: For some browsers, 1000ms is the shortest interval allowed
+	 * for non-active tabs.
 	 * @example
 	 * const tabAlert = new TabAlert();
 	 * tabAlert.alert({ message: "Time's Up!", icon: "stopwatch", times: 3 });
@@ -194,8 +189,8 @@ window.TabAlert = (function () {
 	publicObject.stop = function() {
 		window.clearInterval(intervalID);
 		showOriginal = true;
-		_changeFavicon();
-		_changeTitle();
+		_toggleFavicon();
+		_toggleTitle();
 	}
 
 	return publicObject;
