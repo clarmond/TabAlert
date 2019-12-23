@@ -14,6 +14,7 @@
  * tabAlert.alert({ message: "Time's up!", icon: "stopwatch" });
  */
 
+// eslint-disable-next-line func-names
 window.TabAlert = (function () {
 	const publicObject = {};
 
@@ -25,17 +26,17 @@ window.TabAlert = (function () {
 		'stop sign': '🛑',
 		'hour glass done': '⌛',
 		'alarm clock': '⏰',
-		'stopwatch': '⏱',
+		stopwatch: '⏱',
 		'timer clock': '⏲',
-		'star': '⭐',
-		'fire': '🔥',
+		star: '⭐',
+		fire: '🔥',
 		'party popper': '🎉',
-		'bell': '🔔',
+		bell: '🔔',
 		'envelope with arrow': '📩',
-		'locked': '🔒',
+		locked: '🔒',
 		'exclamation mark': '❗',
 		'red circle': '🔴',
-	}
+	};
 
 	let alertDelay = DEFAULT_DELAY;
 	let alertIcon = {
@@ -79,7 +80,7 @@ window.TabAlert = (function () {
 	 * Toggles favicon based on state (showOriginal)
 	 */
 	function _toggleFavicon() {
-		let favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
+		const favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
 
 		if (!favicon) return;
 
@@ -110,13 +111,11 @@ window.TabAlert = (function () {
 				image: favicon.getAttribute('href'),
 				type: favicon.getAttribute('type'),
 			};
-		} else {
-			console.warn('favicon not found');
-			return {
-				image: '',
-				type: '',
-			};
 		}
+		return {
+			image: '',
+			type: '',
+		};
 	}
 
 	/**
@@ -159,7 +158,7 @@ window.TabAlert = (function () {
 	 * const tabAlert = new TabAlert();
 	 * tabAlert.alert({ message: "Time's Up!", icon: "stopwatch", times: 3 });
 	 */
-	publicObject.alert = function(args) {
+	publicObject.alert = (args) => {
 		originalTitle = window.top.document.title;
 		originalIcon = _getOriginalFavicon();
 		if (args.message !== undefined) {
@@ -178,24 +177,23 @@ window.TabAlert = (function () {
 		} else {
 			countdown = 0;
 		}
-		args.delay = parseInt(args.delay);
-		if (!isNaN(args.delay)) {
-			alertDelay = args.delay
+		if (!Number.isNaN(args.delay)) {
+			alertDelay = args.delay;
 		} else {
 			alertDelay = DEFAULT_DELAY;
 		}
 		_startTimer();
-	}
+	};
 
 	/**
 	 * Stops the alert and restores the title and/or icon back to the original
 	 */
-	publicObject.stop = function() {
+	publicObject.stop = () => {
 		window.clearInterval(intervalID);
 		showOriginal = true;
 		_toggleFavicon();
 		_toggleTitle();
-	}
+	};
 
 	return publicObject;
 });
