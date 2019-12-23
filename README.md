@@ -19,7 +19,7 @@ Flashes the title and/or icon in the browser tab to get the user's attention.
 See list of available icons in source code.
 
 `times` (Optional) The number of times to flash the message and/or icon.
-If no number is specified, it will run until the `stop()` method is called.
+If no number is specified, it will run until the _stop()_ method is called.
 
 `delay` (Optional) Controls how fast to update the browser tab.
 This is the number of milliseconds between changes.
