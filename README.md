@@ -12,6 +12,21 @@ Flashes the title and/or icon in the browser tab to get the user's attention.
 </script>
 ```
 
+### Options
+`message` This is the text that will be displayed on tab
+
+`icon` (Optional) If specified, this icon will be toggled with the current favicon.
+See list of available icons in source code.
+
+`times` (Optional) The number of times to flash the message and/or icon.
+If no number is specified, it will run until the `stop()` method is called.
+
+`delay` (Optional) Controls how fast to update the browser tab.
+This is the number of milliseconds between changes.
+
+**Note**: For some browsers, 1000 ms is the shortest interval allowed for non-active tabs.
+Any value less than 1000 will be ignored.
+
 ## Demo
 
 https://clarmond.github.io/TabAlert/index.html
