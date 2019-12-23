@@ -24,10 +24,11 @@ const tabAlert = new TabAlert();
 tabAlert.alert({ message: "Session has expired", icon: "stopwatch", times: 3 });
 ```
 
-Flash "New Message" until the tab gets focus
+Alert user to new messages until the tab gets focus
 ```javascript
 const tabAlert = new TabAlert();
+const unreadMessageCount = SomeModule.getUnreadMessageCount();
 const newTitle = `(${unreadMessageCount}) ${document.title}`;
 window.addEventListener('focus', window.tabAlert.stop);
-tabAlert.alert({ message: newTitle, icon: "speech balloon"});
+tabAlert.alert({ message: newTitle, icon: "speech balloon" });
 ```
