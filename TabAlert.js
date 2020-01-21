@@ -177,7 +177,7 @@ window.TabAlert = (function () {
 		} else {
 			countdown = 0;
 		}
-		if (!Number.isNaN(args.delay)) {
+		if ((args.delay !== undefined) && (!Number.isNaN(args.delay))) {
 			alertDelay = args.delay;
 		} else {
 			alertDelay = DEFAULT_DELAY;
