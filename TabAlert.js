@@ -159,6 +159,8 @@ window.TabAlert = (function () {
 	 * tabAlert.alert({ message: "Time's Up!", icon: "stopwatch", times: 3 });
 	 */
 	publicObject.alert = (args) => {
+		if (intervalID !== undefined) return;
+
 		originalTitle = window.top.document.title;
 		originalIcon = _getOriginalFavicon();
 		if (args.message !== undefined) {
