@@ -82,7 +82,7 @@ window.TabAlert = (function () {
 	function _toggleFavicon() {
 		const favicon = window.top.document.querySelector('link[rel="shortcut icon"]');
 
-		if (!favicon) return;
+		if ((!favicon) || originalIcon.image === '') return;
 
 		if (showOriginal) {
 			favicon.setAttribute('type', originalIcon.type);
